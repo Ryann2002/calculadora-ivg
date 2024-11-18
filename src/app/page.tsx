@@ -20,21 +20,22 @@ export default function Home() {
   const [isLoading, setIsLoading] = React.useState(false);
 
   React.useEffect(() => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const smoothScroll = (e: any) => {
       e.preventDefault();
-      const href = e.currentTarget.getAttribute("href");
+      const href = e.currentTarget.getAttribute('href');
       document.querySelector(href)?.scrollIntoView({
-        behavior: "smooth",
+        behavior: 'smooth',
       });
     };
-
-    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-      anchor.addEventListener("click", smoothScroll);
+  
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', smoothScroll);
     });
-
+  
     return () => {
-      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-        anchor.removeEventListener("click", smoothScroll);
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.removeEventListener('click', smoothScroll);
       });
     };
   }, []);
@@ -604,7 +605,7 @@ export default function Home() {
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                 >
                   {/* Step Card */}
-                  <div className="bg-white rounded-3xl p-8 shadow-sm relative h-full hover:shadow-lg transition-all duration-300 group">
+                  <div className="bg-white rounded-3xl p-8 shadow-sm relative h-full hover:shadow-lg transition-all duration-300 group border">
                     {/* Step Number */}
                     <motion.div
                       className="absolute -top-4 left-8"
@@ -613,7 +614,7 @@ export default function Home() {
                       viewport={{ once: true }}
                       transition={{ duration: 0.5, delay: index * 0.1 + 0.2 }}
                     >
-                      <div className="bg-muted rounded-full px-4 py-1 text-sm group-hover:bg-primary/10 transition-colors duration-300">
+                      <div className="bg-muted rounded-full px-4 py-1 text-sm transition-colors duration-300">
                         {item.step}
                       </div>
                     </motion.div>
@@ -639,7 +640,7 @@ export default function Home() {
                   {/* Arrow */}
                   {index < 3 && (
                     <motion.div
-                      className="hidden md:block absolute top-1/2 -right-4 text-muted-foreground/30"
+                      className="hidden md:block absolute top-1/2 -right-7 text-muted-foreground/30"
                       initial={{ opacity: 0, x: -10 }}
                       whileInView={{ opacity: 1, x: 0 }}
                       viewport={{ once: true }}
