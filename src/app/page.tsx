@@ -428,9 +428,9 @@ export default function Home() {
               },
               {
                 icon: <Percent className="w-10 h-10" />,
-                title: "Porcentagem de Germinação",
+                title: "Taxa de Germinação",
                 description:
-                  "Obtenha automaticamente a porcentagem de germinação das suas amostras.",
+                  "Obtenha automaticamente a taxa de germinação das suas amostras.",
               },
               {
                 icon: <BarChart className="w-10 h-10" />,
@@ -577,7 +577,7 @@ export default function Home() {
                   step: "04",
                   title: "Resultados",
                   description:
-                    "Visualize o IVG e a porcentagem de germinação das suas amostras instantaneamente.",
+                    "Visualize o IVG e a taxa de germinação das suas amostras instantaneamente.",
                   icon: (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -697,9 +697,9 @@ export default function Home() {
               "O IVG é calculado usando a fórmula: IVG = (G1/N1) + (G2/N2) + ... + (Gn/Nn), onde G1, G2, Gn = número de sementes germinadas a cada dia e N1, N2, Nn = número de dias após o início do teste.",
           },
           {
-            question: "Como é calculada a porcentagem de germinação?",
+            question: "Como é calculada a taxa de germinação?",
             answer:
-              "A porcentagem de germinação é calculada dividindo o número total de sementes germinadas pelo número total de sementes utilizadas no teste, multiplicado por 100. Exemplo: (Total de Sementes Germinadas ÷ Total de Sementes) × 100.",
+              "A taxa de germinação é calculada dividindo o número total de sementes germinadas pelo número total de sementes utilizadas no teste, multiplicado por 100. Exemplo: (Total de Sementes Germinadas ÷ Total de Sementes) × 100.",
           },
           {
             question: "Por que devo selecionar a cultura antes do cálculo?",
