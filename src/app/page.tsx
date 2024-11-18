@@ -14,7 +14,12 @@ import {
   ArrowUpRight,
   CheckCircle2,
 } from "lucide-react";
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export default function Home() {
   const [isLoading, setIsLoading] = React.useState(false);
@@ -23,19 +28,19 @@ export default function Home() {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const smoothScroll = (e: any) => {
       e.preventDefault();
-      const href = e.currentTarget.getAttribute('href');
+      const href = e.currentTarget.getAttribute("href");
       document.querySelector(href)?.scrollIntoView({
-        behavior: 'smooth',
+        behavior: "smooth",
       });
     };
-  
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-      anchor.addEventListener('click', smoothScroll);
+
+    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+      anchor.addEventListener("click", smoothScroll);
     });
-  
+
     return () => {
-      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.removeEventListener('click', smoothScroll);
+      document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+        anchor.removeEventListener("click", smoothScroll);
       });
     };
   }, []);
@@ -344,45 +349,7 @@ export default function Home() {
                         </div>
                       </div>
                     </motion.div>
-
-                    {/* Floating Badges com animação */}
-                    <motion.div
-                      className="absolute -right-3 top-1/3 transform translate-x-1/2 rotate-12 md:block hidden"
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ duration: 0.5, delay: 1 }}
-                    >
-                      {/* Resto do conteúdo dos badges permanece o mesmo */}
-                      <div className="absolute -left-3 bottom-1/3 transform -translate-x-1/2 -rotate-12">
-                        <div className="bg-background rounded-2xl shadow-lg p-3 border">
-                          <div className="flex items-center gap-2">
-                            <CheckCircle2 className="w-4 h-4 text-primary" />
-                            <span className="text-sm font-medium">Preciso</span>
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-
-                    <motion.div
-                      className="absolute -right-3 top-2/4 transform translate-x-1/2 md:block hidden"
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ duration: 0.5, delay: 1 }}
-                    >
-                      <div className="absolute -right-3 top-1/3 transform translate-x-1/2 rotate-12">
-                        <div className="bg-background rounded-2xl shadow-lg p-3 border flex items-center gap-2">
-                          <div className="w-2 h-2 rounded-full bg-green-500" />
-                          <span className="text-sm font-medium">
-                            Calculando
-                          </span>
-                        </div>
-                      </div>
-                    </motion.div>
-                    <div className="absolute -z-10 inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent rounded-3xl blur-2xl animate-pulse" />
                   </div>
-
-                  {/* Decorative Elements com animação */}
-                  <div className="absolute -z-10 inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent rounded-3xl blur-2xl animate-pulse" />
                 </div>
               </motion.div>
             </div>
@@ -658,97 +625,102 @@ export default function Home() {
 
       {/* FAQ Section */}
 
-      <motion.section 
-  id="faq" 
-  className="py-32 bg-muted/50 relative overflow-hidden"
-  initial={{ opacity: 0 }}
-  whileInView={{ opacity: 1 }}
-  viewport={{ once: true }}
-  transition={{ duration: 0.5 }}
->
-  {/* Background com padrão sutil */}
-  <div className="absolute inset-0 bg-gradient-to-b from-background/0 via-background/50 to-background/0" />
+      <motion.section
+        id="faq"
+        className="py-32 bg-muted/50 relative overflow-hidden"
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+      >
+        {/* Background com padrão sutil */}
+        <div className="absolute inset-0 bg-gradient-to-b from-background/0 via-background/50 to-background/0" />
 
-  <div className="container mx-auto px-4 relative">
-    <motion.div 
-      className="max-w-2xl mx-auto text-center mb-16"
-      initial={{ y: 20, opacity: 0 }}
-      whileInView={{ y: 0, opacity: 1 }}
-      viewport={{ once: true }}
-      transition={{ duration: 0.5 }}
-    >
-      <h2 className="text-3xl font-bold mb-4">Perguntas Frequentes</h2>
-      <p className="text-muted-foreground">
-        Tire suas dúvidas sobre a calculadora
-      </p>
-    </motion.div>
-
-    <div className="max-w-3xl mx-auto">
-      <Accordion type="single" collapsible className="space-y-4">
-        {[
-          {
-            question: "O que é o Índice de Velocidade de Germinação (IVG)?",
-            answer:
-              "O IVG é um índice que mede a velocidade de germinação das sementes. Ele é calculado somando-se o número de sementes germinadas em cada dia, dividido pelo respectivo dia da contagem. Quanto maior o valor do IVG, maior é a velocidade de germinação.",
-          },
-          {
-            question: "Como é calculado o IVG?",
-            answer:
-              "O IVG é calculado usando a fórmula: IVG = (G1/N1) + (G2/N2) + ... + (Gn/Nn), onde G1, G2, Gn = número de sementes germinadas a cada dia e N1, N2, Nn = número de dias após o início do teste.",
-          },
-          {
-            question: "Como é calculada a taxa de germinação?",
-            answer:
-              "A taxa de germinação é calculada dividindo o número total de sementes germinadas pelo número total de sementes utilizadas no teste, multiplicado por 100. Exemplo: (Total de Sementes Germinadas ÷ Total de Sementes) × 100.",
-          },
-          {
-            question: "Por que devo selecionar a cultura antes do cálculo?",
-            answer:
-              "A seleção da cultura é importante pois cada espécie tem suas particularidades quanto ao processo de germinação, incluindo temperatura ideal, período de avaliação e critérios específicos para considerar uma semente como germinada.",
-          },
-          {
-            question: "Quais culturas estão disponíveis para cálculo?",
-            answer:
-              "Atualmente oferecemos suporte para as principais culturas agrícolas como: Soja, Milho, Feijão, Arroz, Trigo, entre outras. A lista completa está disponível na calculadora.",
-          },
-          {
-            question: "Os cálculos são precisos?",
-            answer:
-              "Sim! Nossa calculadora utiliza fórmulas cientificamente validadas e amplamente utilizadas em pesquisas e análises de germinação, seguindo as metodologias estabelecidas para cada cultura.",
-          },
-        ].map((faq, index) => (
+        <div className="container mx-auto px-4 relative">
           <motion.div
-            key={index}
+            className="max-w-2xl mx-auto text-center mb-16"
             initial={{ y: 20, opacity: 0 }}
             whileInView={{ y: 0, opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
+            transition={{ duration: 0.5 }}
           >
-            <AccordionItem value={`item-${index}`} className="bg-background border rounded-xl overflow-hidden">
-              <AccordionTrigger className="px-6 py-4 hover:no-underline group">
-                <div className="flex items-center gap-4 text-left">
-                  <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <span className="text-primary text-sm font-medium">
-                      {(index + 1).toString().padStart(2, "0")}
-                    </span>
-                  </div>
-                  <span className="font-medium group-hover:text-primary transition-colors">
-                    {faq.question}
-                  </span>
-                </div>
-              </AccordionTrigger>
-              <AccordionContent className="px-6 pb-4 pt-0">
-                <div className="pl-10 text-muted-foreground">
-                  {faq.answer}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
+            <h2 className="text-3xl font-bold mb-4">Perguntas Frequentes</h2>
+            <p className="text-muted-foreground">
+              Tire suas dúvidas sobre a calculadora
+            </p>
           </motion.div>
-        ))}
-      </Accordion>
-    </div>
-  </div>
-</motion.section>
+
+          <div className="max-w-3xl mx-auto">
+            <Accordion type="single" collapsible className="space-y-4">
+              {[
+                {
+                  question:
+                    "O que é o Índice de Velocidade de Germinação (IVG)?",
+                  answer:
+                    "O IVG é um índice que mede a velocidade de germinação das sementes. Ele é calculado somando-se o número de sementes germinadas em cada dia, dividido pelo respectivo dia da contagem. Quanto maior o valor do IVG, maior é a velocidade de germinação.",
+                },
+                {
+                  question: "Como é calculado o IVG?",
+                  answer:
+                    "O IVG é calculado usando a fórmula: IVG = (G1/N1) + (G2/N2) + ... + (Gn/Nn), onde G1, G2, Gn = número de sementes germinadas a cada dia e N1, N2, Nn = número de dias após o início do teste.",
+                },
+                {
+                  question: "Como é calculada a taxa de germinação?",
+                  answer:
+                    "A taxa de germinação é calculada dividindo o número total de sementes germinadas pelo número total de sementes utilizadas no teste, multiplicado por 100. Exemplo: (Total de Sementes Germinadas ÷ Total de Sementes) × 100.",
+                },
+                {
+                  question:
+                    "Por que devo selecionar a cultura antes do cálculo?",
+                  answer:
+                    "A seleção da cultura é importante pois cada espécie tem suas particularidades quanto ao processo de germinação, incluindo temperatura ideal, período de avaliação e critérios específicos para considerar uma semente como germinada.",
+                },
+                {
+                  question: "Quais culturas estão disponíveis para cálculo?",
+                  answer:
+                    "Atualmente oferecemos suporte para as principais culturas agrícolas como: Soja, Milho, Feijão, Arroz, Trigo, entre outras. A lista completa está disponível na calculadora.",
+                },
+                {
+                  question: "Os cálculos são precisos?",
+                  answer:
+                    "Sim! Nossa calculadora utiliza fórmulas cientificamente validadas e amplamente utilizadas em pesquisas e análises de germinação, seguindo as metodologias estabelecidas para cada cultura.",
+                },
+              ].map((faq, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ y: 20, opacity: 0 }}
+                  whileInView={{ y: 0, opacity: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: index * 0.1 }}
+                >
+                  <AccordionItem
+                    value={`item-${index}`}
+                    className="bg-background border rounded-xl overflow-hidden"
+                  >
+                    <AccordionTrigger className="px-6 py-4 hover:no-underline group">
+                      <div className="flex items-center gap-4 text-left">
+                        <div className="w-6 h-6 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
+                          <span className="text-primary text-sm font-medium">
+                            {(index + 1).toString().padStart(2, "0")}
+                          </span>
+                        </div>
+                        <span className="font-medium group-hover:text-primary transition-colors">
+                          {faq.question}
+                        </span>
+                      </div>
+                    </AccordionTrigger>
+                    <AccordionContent className="px-6 pb-4 pt-0">
+                      <div className="pl-10 text-muted-foreground">
+                        {faq.answer}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                </motion.div>
+              ))}
+            </Accordion>
+          </div>
+        </div>
+      </motion.section>
 
       {/* CTA Section */}
       <motion.section
