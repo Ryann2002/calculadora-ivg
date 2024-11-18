@@ -347,7 +347,7 @@ export default function Home() {
 
                     {/* Floating Badges com animação */}
                     <motion.div
-                      className="absolute -right-3 top-1/3 transform translate-x-1/2 rotate-12"
+                      className="absolute -right-3 top-1/3 transform translate-x-1/2 rotate-12 md:block hidden"
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       transition={{ duration: 0.5, delay: 1 }}
@@ -364,7 +364,7 @@ export default function Home() {
                     </motion.div>
 
                     <motion.div
-                      className="absolute -right-3 top-2/4 transform translate-x-1/2"
+                      className="absolute -right-3 top-2/4 transform translate-x-1/2 md:block hidden"
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       transition={{ duration: 0.5, delay: 1 }}
