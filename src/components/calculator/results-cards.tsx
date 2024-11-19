@@ -1,16 +1,35 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { BarChart, Percent, RotateCcw } from "lucide-react";
+import { BarChart, Percent, RotateCcw, Sprout } from "lucide-react";
 import { motion } from "framer-motion";
+import { ExperimentData } from "./calculator";
 
 interface ResultsProps {
-  data: Record<number, number[]>;
-  totalDays: number;
+  experimentData: ExperimentData;
   onReset: () => void;
-}
+ }
+ 
+ export function Results({ experimentData, onReset }: ResultsProps) {
 
-export function Results({ data, totalDays, onReset }: ResultsProps) {
+  const { culture, repetitions, germinationData } = experimentData;
+
+  const totalDays = culture.days;
+  const totalSeeds = culture.totalSeeds;
+  const data = germinationData;
+  const cultura = culture.name;
+  
+  const getCulturaName = (cultura: string) => {
+    const culturas: Record<string, string> = {
+      soja: "Soja (Glycine max)",
+      milho: "Milho (Zea mays)", 
+      feijao: "Feijão (Phaseolus vulgaris)",
+      arroz: "Arroz (Oryza sativa)",
+      trigo: "Trigo (Triticum aestivum)"
+    };
+    return culturas[cultura] || cultura;
+  };
+ 
   // Calculate IVG
   const calculateIVG = () => {
     let ivg = 0;
@@ -19,32 +38,46 @@ export function Results({ data, totalDays, onReset }: ResultsProps) {
       const daySum = dayData.reduce((acc, val) => acc + val, 0);
       ivg += daySum / day;
     }
-    return (ivg / Object.values(data)[0]?.length || 1).toFixed(2);
+    return (ivg / repetitions).toFixed(2);
   };
-
+ 
   // Calculate Germination Rate
   const calculateGerminationRate = () => {
-    const firstDay = data[1] || [];
-    const totalSeeds = firstDay.reduce((acc, val) => acc + val, 0);
     const germinatedSeeds = Object.values(data)
       .flat()
       .reduce((acc, val) => acc + val, 0);
-    return ((germinatedSeeds / (totalSeeds * totalDays)) * 100).toFixed(1);
+    return ((germinatedSeeds / (totalSeeds * repetitions)) * 100).toFixed(1);
   };
-
+ 
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       className="space-y-8"
     >
-      {/* Stats Summary */}
+      {/* Culture Info */}
+      <div className="bg-muted/50 rounded-2xl p-4 flex items-center justify-between">
+        <div className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+            <Sprout className="w-5 h-5 text-primary" />
+          </div>
+          <div>
+            <div className="font-medium">{getCulturaName(cultura)}</div>
+            <div className="text-sm text-muted-foreground">
+              Temperatura ideal: 25°C
+            </div>
+          </div>
+        </div>
+        <div className="text-sm text-muted-foreground">
+          {totalDays} dias de avaliação
+        </div>
+      </div>
+ 
+      {/* Stats Summary */} 
       <div className="grid grid-cols-3 gap-6">
         <div className="space-y-2">
           <div className="text-sm text-muted-foreground">Total Sementes</div>
-          <div className="text-2xl font-bold text-primary">
-            {data[1]?.reduce((acc, val) => acc + val, 0) || 0}
-          </div>
+          <div className="text-2xl font-bold text-primary">{totalSeeds * repetitions}</div>
         </div>
         <div className="space-y-2">
           <div className="text-sm text-muted-foreground">Dias</div>
@@ -52,9 +85,7 @@ export function Results({ data, totalDays, onReset }: ResultsProps) {
         </div>
         <div className="space-y-2">
           <div className="text-sm text-muted-foreground">Repetições</div>
-          <div className="text-2xl font-bold">
-            {Object.values(data)[0]?.length || 0}
-          </div>
+          <div className="text-2xl font-bold">{Object.values(data)[0]?.length || 0}</div>
         </div>
       </div>
 

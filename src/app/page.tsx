@@ -74,9 +74,7 @@ export default function Home() {
           <div className="flex items-center justify-between h-20">
             <div className="flex items-center space-x-2">
               <Sprout className="w-5 h-5" />
-              <span className="font-medium tracking-tight">
-                Calculadora IVG
-              </span>
+              <span className="font-medium tracking-tight">GerminaCalc</span>
             </div>
             <div className="hidden md:flex items-center space-x-8">
               <a
@@ -157,7 +155,7 @@ export default function Home() {
                 </div>
                 <div>
                   <h1 className="text-4xl lg:text-6xl font-bold tracking-tight mb-4">
-                    Calcule o IVG e a Taxa Germinação
+                    Calcule o IVG e a Taxa de Germinação
                     <span className="text-primary block mt-2">
                       com Precisão
                     </span>
@@ -333,7 +331,7 @@ export default function Home() {
                                 <BarChart className="w-4 h-4 text-primary" />
                               </div>
                             </div>
-                            <div className="text-3xl font-bold">67.5%</div>
+                            <div className="text-3xl font-bold">67.5</div>
                           </div>
                           <div className="bg-primary/5 backdrop-blur-sm rounded-2xl p-4 border border-primary/10">
                             <div className="flex items-center justify-between mb-2">

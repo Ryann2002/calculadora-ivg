@@ -3,14 +3,12 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { StepProgress } from "./step-progress";
 import { CultureSelect } from "./culture-select";
 import { RepetitionsInput } from "./repetitions-input";
 import { GerminationTable } from "./germination-table";
 import {
-  ArrowRight,
   Sprout,
   FlaskConical,
   Table,
@@ -18,13 +16,28 @@ import {
 } from "lucide-react";
 import { Results } from "./results-cards";
 
+export interface Cultura {
+  name: string;
+  days: number;
+  totalSeeds: number;
+}
+export interface ExperimentData {
+  culture: Cultura;
+  repetitions: number;
+  germinationData: Record<number, number[]>;
+}
+
 export function Calculator() {
   const [step, setStep] = useState(1);
-  const [cultura, setCultura] = useState("");
-  const [repeticoes, setRepeticoes] = useState(4);
-  const [germinationData, setGerminationData] = useState<
-    Record<number, number[]>
-  >({});
+  const [experimentData, setExperimentData] = useState<ExperimentData>({
+    culture: { name: "", days: 0, totalSeeds: 0 },
+    repetitions: 4,
+    germinationData: {},
+  });
+
+  const updateExperimentData = (data: Partial<ExperimentData>) => {
+    setExperimentData((prev) => ({ ...prev, ...data }));
+  };
 
   const StepContainer = ({
     children,
@@ -73,17 +86,13 @@ export function Calculator() {
                 title="Selecione a Cultura"
                 description="Escolha a cultura que você está analisando"
               >
-                <Card className="p-6">
-                  <CultureSelect value={cultura} onChange={setCultura} />
-                </Card>
-                <Button
-                  className="w-full group"
-                  onClick={() => setStep(2)}
-                  disabled={!cultura}
-                >
-                  Continuar
-                  <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Button>
+                <CultureSelect
+                  onSubmit={(data) => {
+                    updateExperimentData({ culture: data });
+                    setStep(2);
+                  }}
+                  initialData={experimentData.culture}
+                />
               </StepContainer>
             )}
 
@@ -93,30 +102,14 @@ export function Calculator() {
                 title="Repetições"
                 description="Quantas repetições você usou?"
               >
-                <Card className="p-6">
-                  <RepetitionsInput
-                    value={repeticoes}
-                    onChange={setRepeticoes}
-                  />
-                </Card>
-
-                <div className="flex gap-4">
-                  <Button
-                    variant="outline"
-                    className="flex-1"
-                    onClick={() => setStep(1)}
-                  >
-                    Voltar
-                  </Button>
-                  <Button
-                    className="flex-1 group"
-                    onClick={() => setStep(3)}
-                    disabled={!repeticoes}
-                  >
-                    Continuar
-                    <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </div>
+                <RepetitionsInput
+                  value={experimentData.repetitions}
+                  onReturn={() => setStep(1)}
+                  onSubmit={(data) => {
+                    updateExperimentData({ repetitions: data });
+                    setStep(3);
+                  }}
+                />
               </StepContainer>
             )}
 
@@ -127,9 +120,10 @@ export function Calculator() {
                 description="Insira os dados de cada repetição"
               >
                 <GerminationTable
-                  repeticoes={repeticoes}
-                  onComplete={(data) => {
-                    setGerminationData(data);
+                  experimentData={experimentData}
+                  onReturn={() => setStep(2)}
+                  onSubmit={(data) => {
+                    updateExperimentData({ germinationData: data });
                     setStep(4);
                   }}
                 />
@@ -144,13 +138,14 @@ export function Calculator() {
               >
                 <Card className="p-8">
                   <Results
-                    data={germinationData}
-                    totalDays={7}
+                    experimentData={experimentData}
                     onReset={() => {
                       setStep(1);
-                      setCultura("");
-                      setRepeticoes(4);
-                      setGerminationData({});
+                      setExperimentData({
+                        culture: { name: "", days: 0, totalSeeds: 0 },
+                        repetitions: 4,
+                        germinationData: {},
+                      });
                     }}
                   />
                 </Card>

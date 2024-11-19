@@ -7,60 +7,68 @@ import { Input } from "@/components/ui/input";
 import { Progress } from "@/components/ui/progress";
 import { ArrowRight, ArrowLeft } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { ExperimentData } from "./calculator";
 
 interface GerminationTableProps {
-  repeticoes: number;
-  onComplete: (data: Record<number, number[]>) => void;
+  experimentData: ExperimentData;
+  onSubmit: (data: Record<number, number[]>) => void;
+  onReturn: () => void;
 }
 
 export function GerminationTable({
-  repeticoes,
-  onComplete,
+  experimentData,
+  onSubmit,
+  onReturn,
 }: GerminationTableProps) {
+  const { repetitions, culture } = experimentData;
+  const totalDays = culture.days;
+  const totalSeeds = culture.totalSeeds;
+
+
   const [currentDay, setCurrentDay] = useState(1);
-  const [totalDays] = useState(7);
   const [data, setData] = useState<Record<number, number[]>>(() => {
-    // Initialize data structure for all days and repetitions
     const initialData: Record<number, number[]> = {};
     for (let day = 1; day <= totalDays; day++) {
-      initialData[day] = Array(repeticoes).fill(0);
+      initialData[day] = Array(repetitions).fill(0);
     }
     return initialData;
   });
   const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const totalFields = totalDays * repetitions;
+    const filledFields = Object.values(data)
+      .flat()
+      .filter((v) => v > 0).length;
+    const newProgress = (filledFields / totalFields) * 100;
+    setProgress(newProgress);
+  }, [data, repetitions, totalDays]);
+
+  const handleInputChange = (repetition: number, value: string) => {
+    const numValue = parseInt(value) || 0;
+    if (numValue <= totalSeeds) {
+      setData((prev) => ({
+        ...prev,
+        [currentDay]: prev[currentDay].map((val, idx) =>
+          idx === repetition ? numValue : val
+        ),
+      }));
+    }
+  };
 
   // Verify if current day is complete
   const isDayComplete = () => {
     return data[currentDay]?.every((value) => value > 0);
   };
 
-  // Calculate overall progress
-  useEffect(() => {
-    const totalFields = totalDays * repeticoes;
-    const filledFields = Object.values(data)
-      .flat()
-      .filter((v) => v > 0).length;
-    const newProgress = (filledFields / totalFields) * 100;
-    setProgress(newProgress);
-
-    if (newProgress === 100) {
-      onComplete(data);
+  const handleNext = () => {
+    if (currentDay < totalDays) {
+      setCurrentDay((prev) => prev + 1);
     }
-  }, [data, repeticoes, totalDays, onComplete]);
-
-  // Update data for a repetition
-  const handleInputChange = (repetition: number, value: string) => {
-    const numValue = parseInt(value) || 0;
-    setData((prev) => ({
-      ...prev,
-      [currentDay]: prev[currentDay].map((val, idx) =>
-        idx === repetition ? numValue : val
-      ),
-    }));
   };
 
   return (
-    <div className="space-y-6">
+    <><div className="space-y-6">
       {/* Progress Header */}
       <div className="space-y-2">
         <div className="flex justify-between items-center">
@@ -85,8 +93,8 @@ export function GerminationTable({
         <Button
           variant="ghost"
           size="sm"
-          onClick={() => setCurrentDay((prev) => prev + 1)}
-          disabled={!isDayComplete() || currentDay === totalDays}
+          onClick={handleNext}
+          disabled={!isDayComplete()}
         >
           Próximo
           <ArrowRight className="w-4 h-4 ml-2" />
@@ -117,8 +125,7 @@ export function GerminationTable({
                       className="w-full pr-12"
                       placeholder="0"
                       min="0"
-                      max="100"
-                    />
+                      max="100" />
                     <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground">
                       sementes
                     </span>
@@ -138,12 +145,10 @@ export function GerminationTable({
                 {isDayComplete() ? "100%" : "0%"}
               </span>
             </div>
-            <Progress 
-              value={
-                (data[currentDay].filter(v => v > 0).length / repeticoes) * 100
-              } 
-              className="h-1" 
-            />
+            <Progress
+              value={(data[currentDay].filter((v) => v > 0).length / repetitions) *
+                100}
+              className="h-1" />
           </div>
 
           {/* Helper Text */}
@@ -156,6 +161,18 @@ export function GerminationTable({
           </p>
         </motion.div>
       </AnimatePresence>
-    </div>
+    </div><div className="flex gap-4">
+        <Button variant="outline" className="flex-1" onClick={() => onReturn()}>
+          Voltar
+        </Button>
+        <Button
+          className="flex-1 group"
+          onClick={() => onSubmit(data)}
+          disabled={!(currentDay === totalDays && isDayComplete())}
+        >
+          Continuar
+          <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+        </Button>
+      </div></>
   );
 }
