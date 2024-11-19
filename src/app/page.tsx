@@ -413,7 +413,7 @@ export default function Home() {
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
               >
-                <Card className="bg-background border-none shadow-lg group hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                <Card className="bg-background border-none shadow-lg group hover:shadow-xl transition-all duration-300 hover:-translate-y-1 h-full">
                   <CardHeader>
                     <motion.div
                       className="mb-2 p-2.5 w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center group-hover:scale-110 group-hover:bg-primary/20 transition-all duration-300"
