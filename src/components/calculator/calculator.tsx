@@ -15,17 +15,9 @@ import {
   BarChart,
 } from "lucide-react";
 import { Results } from "./results-cards";
+import { ExperimentData } from "@/types";
 
-export interface Cultura {
-  name: string;
-  days: number;
-  totalSeeds: number;
-}
-export interface ExperimentData {
-  culture: Cultura;
-  repetitions: number;
-  germinationData: Record<number, number[]>;
-}
+
 
 export function Calculator() {
   const [step, setStep] = useState(1);

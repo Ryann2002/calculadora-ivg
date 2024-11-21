@@ -14,7 +14,7 @@ interface RepetitionsInputProps {
 
 export function RepetitionsInput({ value, onSubmit, onReturn }: RepetitionsInputProps) {
   const [currentValue, setCurrentValue] = React.useState(value);
-  const MIN_REPETICOES = 2;
+  const MIN_REPETICOES = 1;
   const MAX_REPETICOES = 6;
 
   const handleIncrement = () => {

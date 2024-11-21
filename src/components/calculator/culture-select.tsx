@@ -11,31 +11,25 @@ import React from "react";
 import { Card } from "../ui/card";
 import { ArrowRight } from "lucide-react";
 import { Label } from "../ui/label";
-import { Cultura } from "./calculator";
-
+import { CulturaWithTotalSeeds } from "@/types";
+import { CULTURAS } from "@/constants/constants";
 
 interface CultureSelectProps {
-  initialData: Cultura;
-  onSubmit: (data: Cultura) => void;
+  initialData: CulturaWithTotalSeeds;
+  onSubmit: (data: CulturaWithTotalSeeds) => void;
 }
 
 export function CultureSelect({ onSubmit, initialData }: CultureSelectProps) {
-  const [selectedCulture, setSelectedCulture] = React.useState(initialData.name);
+  const [selectedCulture, setSelectedCulture] = React.useState(
+    initialData.name
+  );
   const [seeds, setSeeds] = React.useState(initialData.totalSeeds.toString());
-
-  const culturas = {
-    soja: { name: "Soja (Glycine max)", days: 2 },
-    milho: { name: "Milho (Zea mays)", days: 7 },
-    feijao: { name: "Feijão (Phaseolus vulgaris)", days: 9 },
-    arroz: { name: "Arroz (Oryza sativa)", days: 14 },
-    trigo: { name: "Trigo (Triticum aestivum)", days: 8 },
-  };
 
   const handleSubmit = () => {
     if (selectedCulture && seeds) {
       onSubmit({
         name: selectedCulture,
-        days: culturas[selectedCulture as keyof typeof culturas].days,
+        days: CULTURAS[selectedCulture as keyof typeof CULTURAS].days,
         totalSeeds: parseInt(seeds),
       });
     }
@@ -54,9 +48,14 @@ export function CultureSelect({ onSubmit, initialData }: CultureSelectProps) {
                 <SelectValue placeholder="Escolha a cultura" />
               </SelectTrigger>
               <SelectContent>
-                {Object.entries(culturas).map(([key, { name }]) => (
+                {Object.entries(CULTURAS).map(([key, cultura]) => (
                   <SelectItem key={key} value={key}>
-                    {name}
+                    {cultura.name}
+                    {cultura.scientific_name && (
+                      <span className="text-muted-foreground ml-1">
+                        ({cultura.scientific_name})
+                      </span>
+                    )}
                   </SelectItem>
                 ))}
               </SelectContent>
@@ -86,7 +85,7 @@ export function CultureSelect({ onSubmit, initialData }: CultureSelectProps) {
                   </p>
                   <p>
                     <strong>Período de Avaliação:</strong>{" "}
-                    {culturas[selectedCulture as keyof typeof culturas].days}{" "}
+                    {CULTURAS[selectedCulture as keyof typeof CULTURAS].days}{" "}
                     dias
                   </p>
                 </div>

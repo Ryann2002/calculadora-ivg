@@ -20,6 +20,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { CULTURAS } from "@/constants/constants";
 
 export default function Home() {
   const [isLoading, setIsLoading] = React.useState(false);
@@ -211,30 +212,27 @@ export default function Home() {
                       animate={{ y: 0, opacity: 1 }}
                       transition={{ duration: 0.5, delay: 0.6 }}
                     >
-                      <div className="mb-8">
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="text-sm text-muted-foreground">
-                            Cultura Selecionada
+                      <div className="bg-muted/50 rounded-2xl p-4 flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+                            <Sprout className="w-5 h-5 text-primary" />
                           </div>
-                          <div className="bg-primary/10 px-3 py-1 rounded-full text-sm text-primary">
-                            Soja
+                          <div>
+                            <div className="font-medium">
+                              {CULTURAS["soja"].name}
+                              {CULTURAS["soja"].scientific_name && (
+                                <span className="text-sm text-muted-foreground ml-1">
+                                  ({CULTURAS["soja"].scientific_name})
+                                </span>
+                              )}
+                            </div>
+                            <div className="text-sm text-muted-foreground">
+                              Temperatura ideal: 25°C
+                            </div>
                           </div>
                         </div>
-                        <div className="bg-muted/50 rounded-2xl p-4 flex items-center justify-between">
-                          <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
-                              <Sprout className="w-5 h-5 text-primary" />
-                            </div>
-                            <div>
-                              <div className="font-medium">Soja</div>
-                              <div className="text-sm text-muted-foreground">
-                                Glycine max
-                              </div>
-                            </div>
-                          </div>
-                          <div className="text-sm text-muted-foreground">
-                            Temperatura ideal: 25°C
-                          </div>
+                        <div className="text-sm text-muted-foreground">
+                          3 dias de avaliação
                         </div>
                       </div>
                     </motion.div>
@@ -258,7 +256,7 @@ export default function Home() {
                           <div className="text-sm text-muted-foreground">
                             Dias
                           </div>
-                          <div className="text-2xl font-bold">07</div>
+                          <div className="text-2xl font-bold">3</div>
                         </div>
                         <div className="space-y-2">
                           <div className="text-sm text-muted-foreground">
@@ -277,50 +275,6 @@ export default function Home() {
                     >
                       <div className="space-y-8">
                         {/* Progress Bars */}
-                        <div className="space-y-4">
-                          <div className="space-y-2">
-                            <div className="flex justify-between text-sm">
-                              <span className="text-muted-foreground">
-                                Dia 1
-                              </span>
-                              <span className="font-medium">45%</span>
-                            </div>
-                            <div className="h-2 bg-muted rounded-full overflow-hidden">
-                              <div
-                                className="h-full bg-primary rounded-full"
-                                style={{ width: "45%" }}
-                              />
-                            </div>
-                          </div>
-                          <div className="space-y-2">
-                            <div className="flex justify-between text-sm">
-                              <span className="text-muted-foreground">
-                                Dia 2
-                              </span>
-                              <span className="font-medium">30%</span>
-                            </div>
-                            <div className="h-2 bg-muted rounded-full overflow-hidden">
-                              <div
-                                className="h-full bg-primary rounded-full"
-                                style={{ width: "30%" }}
-                              />
-                            </div>
-                          </div>
-                          <div className="space-y-2">
-                            <div className="flex justify-between text-sm">
-                              <span className="text-muted-foreground">
-                                Dia 3
-                              </span>
-                              <span className="font-medium">15%</span>
-                            </div>
-                            <div className="h-2 bg-muted rounded-full overflow-hidden">
-                              <div
-                                className="h-full bg-primary rounded-full"
-                                style={{ width: "15%" }}
-                              />
-                            </div>
-                          </div>
-                        </div>
 
                         {/* Results Cards */}
                         <div className="grid grid-cols-2 gap-4">
@@ -331,8 +285,12 @@ export default function Home() {
                                 <BarChart className="w-4 h-4 text-primary" />
                               </div>
                             </div>
-                            <div className="text-3xl font-bold">67.5</div>
+                            <div className="text-3xl font-bold">48.00</div>
+                            <div className="text-xs text-muted-foreground mt-2">
+                              Índice de Velocidade de Germinação
+                            </div>
                           </div>
+
                           <div className="bg-primary/5 backdrop-blur-sm rounded-2xl p-4 border border-primary/10">
                             <div className="flex items-center justify-between mb-2">
                               <div className="text-sm font-medium">
@@ -343,6 +301,75 @@ export default function Home() {
                               </div>
                             </div>
                             <div className="text-3xl font-bold">90%</div>
+                            <div className="text-xs text-muted-foreground mt-2">
+                              Taxa de Germinação
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="space-y-4">
+                          <div className="space-y-2">
+                            <div className="flex justify-between text-sm">
+                              <span className="text-muted-foreground">
+                                Dia 1
+                              </span>
+                              <div className="flex items-center gap-2">
+                                <span className="font-medium">3 sementes</span>
+                                <span className="text-sm text-muted-foreground">
+                                  (3%)
+                                </span>
+                              </div>
+                            </div>
+                            <div className="h-2 bg-muted rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-primary rounded-full transition-all duration-300"
+                                style={{
+                                  width: `3%`,
+                                }}
+                              />
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <div className="flex justify-between text-sm">
+                              <span className="text-muted-foreground">
+                                Dia 2
+                              </span>
+                              <div className="flex items-center gap-2">
+                                <span className="font-medium">3 sementes</span>
+                                <span className="text-sm text-muted-foreground">
+                                  (30%)
+                                </span>
+                              </div>
+                            </div>
+                            <div className="h-2 bg-muted rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-primary rounded-full transition-all duration-300"
+                                style={{
+                                  width: `30%`,
+                                }}
+                              />
+                            </div>
+                          </div>
+                          <div className="space-y-2">
+                            <div className="flex justify-between text-sm">
+                              <span className="text-muted-foreground">
+                                Dia 3
+                              </span>
+                              <div className="flex items-center gap-2">
+                                <span className="font-medium">90 sementes</span>
+                                <span className="text-sm text-muted-foreground">
+                                  (90%)
+                                </span>
+                              </div>
+                            </div>
+                            <div className="h-2 bg-muted rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-primary rounded-full transition-all duration-300"
+                                style={{
+                                  width: `90%`,
+                                }}
+                              />
+                            </div>
                           </div>
                         </div>
                       </div>

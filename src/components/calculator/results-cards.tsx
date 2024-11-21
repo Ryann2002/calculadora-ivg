@@ -3,52 +3,49 @@
 import { Button } from "@/components/ui/button";
 import { BarChart, Percent, RotateCcw, Sprout } from "lucide-react";
 import { motion } from "framer-motion";
-import { ExperimentData } from "./calculator";
+import { ExperimentData } from "@/types";
+import { CULTURAS } from "@/constants/constants";
 
 interface ResultsProps {
   experimentData: ExperimentData;
   onReset: () => void;
- }
- 
- export function Results({ experimentData, onReset }: ResultsProps) {
+}
 
+export function Results({ experimentData, onReset }: ResultsProps) {
   const { culture, repetitions, germinationData } = experimentData;
 
   const totalDays = culture.days;
   const totalSeeds = culture.totalSeeds;
   const data = germinationData;
   const cultura = culture.name;
-  
-  const getCulturaName = (cultura: string) => {
-    const culturas: Record<string, string> = {
-      soja: "Soja (Glycine max)",
-      milho: "Milho (Zea mays)", 
-      feijao: "Feijão (Phaseolus vulgaris)",
-      arroz: "Arroz (Oryza sativa)",
-      trigo: "Trigo (Triticum aestivum)"
-    };
-    return culturas[cultura] || cultura;
-  };
- 
+
   // Calculate IVG
   const calculateIVG = () => {
     let ivg = 0;
     for (let day = 1; day <= totalDays; day++) {
       const dayData = data[day] || [];
+      // Get the sum of germinated seeds for this day across all repetitions
       const daySum = dayData.reduce((acc, val) => acc + val, 0);
+      // Divide by the day number and add to total IVG
       ivg += daySum / day;
     }
+    // Get average IVG across repetitions
     return (ivg / repetitions).toFixed(2);
   };
- 
+
   // Calculate Germination Rate
   const calculateGerminationRate = () => {
-    const germinatedSeeds = Object.values(data)
-      .flat()
-      .reduce((acc, val) => acc + val, 0);
-    return ((germinatedSeeds / (totalSeeds * repetitions)) * 100).toFixed(1);
+    // Get the last day's data (total viable seedlings)
+    const lastDayData = data[totalDays] || [];
+    const totalGerminatedSeeds = lastDayData.reduce((acc, val) => acc + val, 0);
+
+    // Total possible seeds (seeds per repetition * number of repetitions)
+    const totalPossibleSeeds = totalSeeds * repetitions;
+
+    // Calculate percentage
+    return ((totalGerminatedSeeds / totalPossibleSeeds) * 100).toFixed(1);
   };
- 
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -62,7 +59,14 @@ interface ResultsProps {
             <Sprout className="w-5 h-5 text-primary" />
           </div>
           <div>
-            <div className="font-medium">{getCulturaName(cultura)}</div>
+            <div className="font-medium">
+              {CULTURAS[cultura].name}
+              {CULTURAS[cultura].scientific_name && (
+                <span className="text-sm text-muted-foreground ml-1">
+                  ({CULTURAS[cultura].scientific_name})
+                </span>
+              )}
+            </div>
             <div className="text-sm text-muted-foreground">
               Temperatura ideal: 25°C
             </div>
@@ -72,12 +76,14 @@ interface ResultsProps {
           {totalDays} dias de avaliação
         </div>
       </div>
- 
-      {/* Stats Summary */} 
+
+      {/* Stats Summary */}
       <div className="grid grid-cols-3 gap-6">
         <div className="space-y-2">
-          <div className="text-sm text-muted-foreground">Total Sementes</div>
-          <div className="text-2xl font-bold text-primary">{totalSeeds * repetitions}</div>
+          <div className="text-sm text-muted-foreground">
+            Sementes por Repetição
+          </div>
+          <div className="text-2xl font-bold text-primary">{totalSeeds}</div>
         </div>
         <div className="space-y-2">
           <div className="text-sm text-muted-foreground">Dias</div>
@@ -85,7 +91,7 @@ interface ResultsProps {
         </div>
         <div className="space-y-2">
           <div className="text-sm text-muted-foreground">Repetições</div>
-          <div className="text-2xl font-bold">{Object.values(data)[0]?.length || 0}</div>
+          <div className="text-2xl font-bold">{repetitions}</div>
         </div>
       </div>
 
@@ -111,7 +117,9 @@ interface ResultsProps {
               <Percent className="w-4 h-4 text-primary" />
             </div>
           </div>
-          <div className="text-3xl font-bold">{calculateGerminationRate()}%</div>
+          <div className="text-3xl font-bold">
+            {calculateGerminationRate()}%
+          </div>
           <div className="text-xs text-muted-foreground mt-2">
             Taxa de Germinação
           </div>
@@ -122,34 +130,41 @@ interface ResultsProps {
       <div className="space-y-4">
         <div className="text-sm font-medium">Dados por Dia</div>
         <div className="space-y-4">
-          {Object.entries(data).map(([day, values]) => (
-            <div key={day} className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="text-muted-foreground">Dia {day}</span>
-                <span className="font-medium">
-                  {values.reduce((acc, val) => acc + val, 0)} sementes
-                </span>
+          {Object.entries(data).map(([day, values]) => {
+            // Calculate percentage for this day
+            const dayTotal = values.reduce((acc, val) => acc + val, 0);
+            const dayPercentage = (
+              (dayTotal / (totalSeeds * repetitions)) *
+              100
+            ).toFixed(1);
+
+            return (
+              <div key={day} className="space-y-2">
+                <div className="flex justify-between text-sm">
+                  <span className="text-muted-foreground">Dia {day}</span>
+                  <div className="flex items-center gap-2">
+                    <span className="font-medium">{dayTotal} sementes</span>
+                    <span className="text-sm text-muted-foreground">
+                      ({dayPercentage}%)
+                    </span>
+                  </div>
+                </div>
+                <div className="h-2 bg-muted rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-primary rounded-full transition-all duration-300"
+                    style={{
+                      width: `${dayPercentage}%`,
+                    }}
+                  />
+                </div>
               </div>
-              <div className="h-2 bg-muted rounded-full overflow-hidden">
-                <div
-                  className="h-full bg-primary rounded-full"
-                  style={{
-                    width: `${(values.reduce((acc, val) => acc + val, 0) / 
-                      (data[1]?.reduce((acc, val) => acc + val, 0) || 1)) * 100}%`,
-                  }}
-                />
-              </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
       </div>
 
       {/* Reset Button */}
-      <Button
-        variant="outline"
-        onClick={onReset}
-        className="w-full group"
-      >
+      <Button variant="outline" onClick={onReset} className="w-full group">
         <RotateCcw className="w-4 h-4 mr-2 group-hover:rotate-180 transition-transform duration-300" />
         Calcular Novamente
       </Button>
